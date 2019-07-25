@@ -25,7 +25,6 @@ function checkCol(col){
   return true;
 }
   // return board[0][col].innerText === current_player && board[1][col].innerText === current_player && board[2][col].innerText === current_player;
-}
 
 function checkRow(row){
   var x =0;
@@ -37,8 +36,20 @@ function checkRow(row){
   return true;
 }
 
-function checkWin(){
+function checkDia(){
+  var diagonal1 = board[0][0].innerHTML === current_player && board[1][1].innerHTML === current_player && board[2][2].innerHTML === current_player;
+  var diagonal2 = board[0][2].innerHTML === current_player && board[1][1].innerHTML === current_player && board[2][0].innerHTML === current_player;
+  return diagonal1 || diagonal2;
+}
 
+function checkWin(){
+  var i = 0;
+  for(i = 0; i < 3; i++){
+    if(checkCol(i) || checkRow(i)){
+      return true;
+    }
+  }
+  return checkDia(); //check the diagonals
 }
 
 
@@ -47,6 +58,9 @@ function checkWin(){
 function turn(){
   if (event.target.innerText === ""){
     event.target.innerText = current_player;
+      if (checkWin()){
+        document.body.innerHTML = `<center id="winner">${current_player} wins!</center>`;
+      }
     if (current_player === "X"){
       current_player = "O";
       //current_player = current_player === "X" ? "O" : "X";
